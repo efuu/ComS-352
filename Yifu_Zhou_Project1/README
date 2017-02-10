@@ -1,0 +1,5 @@
+@author Yifu Zhou
+I create three file, uthread.c and uthread.h will all the function, and test.c with main() and test codes. You can add or modify my test.c file if you want.
+If you want to compile my code, just "make" it, and my makefile will compile it automatically.
+After finishing it, "make clean" will clean all the object files.
+Thank you!
