@@ -1,3 +1,40 @@
 @author Yifu Zhou
 A Demand-Paging Virtual Memory Simulator
-In this multi-thread program, multiple concurrent ``user processes’’ (simulated by multiple user threads) will access addresses in their own ``logical address spaces’’, which will be dynamically mapped to a ``physical main memory’’ according to the demand paging strategy and the LRU page replacement algorithm
+In this multi-thread program, multiple concurrent "user processes" (simulated by multiple user threads) will access addresses in their own "logical address spaces", which will be dynamically mapped to a "physical main memory" according to the demand paging strategy and the LRU page replacement algorithm
+
+Formats of Outputs
+The simulated ith user process will read the logical addresses in the ith file one by one, and for
+each address, it will simulate that it is accessing the address. That is, it submits the local address
+to the memory manger thread, who needs to extract the page number of the address. Then:
+• If the page is in the simulated physical main memory, a message as follows will be
+output:
+[Process i] accesses address x (page number = p, page offset=d) in main memory (frame
+number = f).
+• If the page is not found in the simulated physical main memory, triggering a page fault
+will be simulated. Specifically, the page fault handler thread should be notified to execute
+the demand paging strategy:
+· Firstly, it tries to find a free frame in the main memory. A message as follows should
+be output:  
+[Process i] accesses address x (page number = p, page offset = d) not in main memory.  
+· If there is no free frame found, the LRU algorithm should be used to determine which
+page should be replaced. One of the following messages should be output:  
+o When a free frame is found:
+[Process i] finds a free frame in main memory (frame number = f).
+o Otherwise:
+[Process i] replaces a frame (frame number = f) from the main memory.
+· The page fault handling thread should sleep for 1 millisecond (i.e., calling
+usleep(1000) in C) to simulate that the time needed to swap the demanded page into
+the main memory. (Note that, the underlying OS may swap the sleeping thread out and
+switches to run another thread; this does not matter to our simulation.) The following
+message should be output before the thread goes to sleep:
+[Process i] issues an I/O operation to swap in demanded page (page number = p).  
+· When the thread becomes active from the sleep, the page table of the user process that
+it is simulating should be updated accordingly. Also, the following message should be
+output:
+ [Process i] demanded page (page number =p) has been swapped in main memory
+(frame number = f).  
+· Finally, the interrupted address access should be resumed and completed.  [Process i]
+accesses address x (page number = p, page offset =d) in main memory (frame number
+= f).  After all addresses in the ith file have been accessed, the ith thread (a.k.a., the ith
+user process simulated by it) will terminate. Before termination, it should output the
+following message:  [Process i] ends.
