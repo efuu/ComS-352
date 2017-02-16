@@ -14,10 +14,10 @@ number = f).
 will be simulated. Specifically, the page fault handler thread should be notified to execute
 the demand paging strategy:
 · Firstly, it tries to find a free frame in the main memory. A message as follows should
-be output:  
-[Process i] accesses address x (page number = p, page offset = d) not in main memory.  
+be output: 
+[Process i] accesses address x (page number = p, page offset = d) not in main memory. 
 · If there is no free frame found, the LRU algorithm should be used to determine which
-page should be replaced. One of the following messages should be output:  
+page should be replaced. One of the following messages should be output: 
 o When a free frame is found:
 [Process i] finds a free frame in main memory (frame number = f).
 o Otherwise:
@@ -27,14 +27,14 @@ usleep(1000) in C) to simulate that the time needed to swap the demanded page in
 the main memory. (Note that, the underlying OS may swap the sleeping thread out and
 switches to run another thread; this does not matter to our simulation.) The following
 message should be output before the thread goes to sleep:
-[Process i] issues an I/O operation to swap in demanded page (page number = p).  
+[Process i] issues an I/O operation to swap in demanded page (page number = p). 
 · When the thread becomes active from the sleep, the page table of the user process that
 it is simulating should be updated accordingly. Also, the following message should be
 output:
- [Process i] demanded page (page number =p) has been swapped in main memory
-(frame number = f).  
-· Finally, the interrupted address access should be resumed and completed.  [Process i]
+ [Process i] demanded page (page number =p) has been swapped in main memory
+(frame number = f). 
+· Finally, the interrupted address access should be resumed and completed.  [Process i]
 accesses address x (page number = p, page offset =d) in main memory (frame number
-= f).  After all addresses in the ith file have been accessed, the ith thread (a.k.a., the ith
+= f).  After all addresses in the ith file have been accessed, the ith thread (a.k.a., the ith
 user process simulated by it) will terminate. Before termination, it should output the
-following message:  [Process i] ends.
+following message:  [Process i] ends.
